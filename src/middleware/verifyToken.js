@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import appError from "../utils/appError";
-import HttpStatusText from "../utils/httpStatusText";
+import appError from "../utils/appError.js";
+import HttpStatusText from "../utils/httpStatusText.js";
 
 function verifyToken(req,res,next) {
   const authHeader = req.get("Authorization") || req.get("authorization");

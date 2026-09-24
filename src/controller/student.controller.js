@@ -1,5 +1,5 @@
 import EnrollmentModel from "../model/enrollment.model.js";
-import ClasstModel from "../model/class.model.js";
+import ClassModel from "../model/class.model.js";
 import handelErrors from "../utils/globalError.js";
 import ClassStatus from "../utils/class.status.js";
 import appError from "../utils/appError.js";
@@ -9,7 +9,7 @@ const enrollInClass = handelErrors(async (req, res, next) => {
   const studentId = req.currentUser.id;
   const classCode = req.params.code;
 
-  const isClassExist = await ClasstModel.findOne({
+  const isClassExist = await ClassModel.findOne({
     code: classCode,
     status: ClassStatus.ACTIVE,
   });
@@ -52,8 +52,8 @@ const enrollInClass = handelErrors(async (req, res, next) => {
 
 const getMyEnrollments = handelErrors(async (req, res, next) => {
   const studentId = req.currentUser.id;
-  const limit = req.params.limit || 10;
-  const page = req.params.page || 1;
+  const limit = Number(req.query.limit) || 10;
+  const page = Number(req.query.page) || 1;
   const skip = (page - 1) * limit;
   const myEnrollments = await EnrollmentModel.find(
     { student: studentId },
@@ -70,14 +70,14 @@ const getMyEnrollments = handelErrors(async (req, res, next) => {
 });
 
 const getAvailableClasses = handelErrors(async (req, res, next) => {
-  const limit = req.params.limit || 10;
-  const page = req.params.page || 1;
+  const limit = Number(req.query.limit) || 10;
+  const page = Number(req.query.page) || 1;
   const skip = (page - 1) * limit;
-  const classes = await ClasstModel.find(
+  const classes = await ClassModel.find(
     { status: ClassStatus.ACTIVE },
     { _id: false, __v: false },
   )
-    .populate("teacher","name -_id")
+    .populate("teacher", "name -_id")
     .limit(limit)
     .skip(skip);
   return res.status(200).json({

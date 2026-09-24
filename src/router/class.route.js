@@ -6,7 +6,13 @@ import { userRole } from "../utils/user.role.js";
 import classController from "../controller/class.controller.js";
 const router = express.Router();
 
-router.route("/").get(verifyToken,allowPermissionTo(userRole.TEACHER), classController.getAllClasses);
+router
+  .route("/")
+  .get(
+    verifyToken,
+    allowPermissionTo(userRole.TEACHER),
+    classController.getAllClasses,
+  );
 router
   .route("/create")
   .post(
@@ -22,7 +28,9 @@ router
     allowPermissionTo(userRole.TEACHER),
     classController.editClass,
   );
-  router
+  router.route('/:code')
+   .get(verifyToken, classController.getClassByCode);
+router
   .route("/delete/:code")
   .delete(
     verifyToken,

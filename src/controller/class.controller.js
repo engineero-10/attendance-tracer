@@ -45,7 +45,8 @@ const getAllClasses = handelErrors(async (req, res, next) => {
 const getClassByCode = handelErrors(async (req, res, next) => {
   const reqClassCode = req.params.code;
   const teacherId = req.currentUser.id;
-
+  console.log("sdfsdf");
+  
   const classData = await ClassModel.findOne(
     {
       teacher: teacherId,

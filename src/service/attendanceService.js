@@ -117,6 +117,7 @@ async function dailyAttendanceSummary(classCode, teacherId, date) {
       notMarked++;
       return {
         student: student.name,
+        studentId: student._id,
         userName: student.userName,
         status: "NOT_MARKED",
         participationScore: 0,
@@ -126,6 +127,7 @@ async function dailyAttendanceSummary(classCode, teacherId, date) {
     else if (attendance.status === "ABSENT") absent++;
     return {
       student: student.name,
+      studentId: student._id,
       userName: student.userName,
       status: attendance.status,
       participationScore: attendance.participationScore,

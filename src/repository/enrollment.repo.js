@@ -22,7 +22,7 @@ function findMyEnrollments(studentId, limit, skip) {
 function findEnrollmentsByClass(classCode) {
   return EnrollmentModel.find({ class: classCode }).populate(
     "student",
-    "name userName -_id",
+    "name userName",
   );
 }
 

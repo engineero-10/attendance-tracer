@@ -65,10 +65,10 @@ New users default to the `STUDENT` role unless a different valid role is provide
 
 ### Authentication
 
-| Method | Endpoint | Authentication | Description |
-| --- | --- | --- | --- |
-| POST | `/api/auth/signup` | No | Create a user account |
-| POST | `/api/auth/login` | No | Authenticate a user and receive a token |
+| Method | Endpoint           | Authentication | Description                             |
+| ------ | ------------------ | -------------- | --------------------------------------- |
+| POST   | `/api/auth/signup` | No             | Create a user account                   |
+| POST   | `/api/auth/login`  | No             | Authenticate a user and receive a token |
 
 Signup body:
 
@@ -95,13 +95,13 @@ Login body:
 
 All endpoints in this section require a valid JWT and the `TEACHER` role, except where noted.
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| GET | `/api/classes` | Get the teacher's classes |
-| POST | `/api/classes/create` | Create a class |
-| GET | `/api/classes/:code` | Get a class by code; requires a valid JWT |
-| PATCH | `/api/classes/edit/:code` | Update a class |
-| DELETE | `/api/classes/delete/:code` | Delete a class |
+| Method | Endpoint                    | Description                               |
+| ------ | --------------------------- | ----------------------------------------- |
+| GET    | `/api/classes`              | Get the teacher's classes                 |
+| POST   | `/api/classes/create`       | Create a class                            |
+| GET    | `/api/classes/:code`        | Get a class by code; requires a valid JWT |
+| PATCH  | `/api/classes/edit/:code`   | Update a class                            |
+| DELETE | `/api/classes/delete/:code` | Delete a class                            |
 
 Create class body:
 
@@ -126,12 +126,12 @@ Supported class statuses are `ACTIVE` and `INACTIVE`.
 
 All endpoints in this section require a valid JWT and the `STUDENT` role.
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| GET | `/api/students/classes` | Get active classes available for enrollment |
-| GET | `/api/students` | Get the student's enrollments |
-| POST | `/api/students/:code` | Enroll in a class by code |
-| GET | `/api/students/my_history` | Get the student's attendance history |
+| Method | Endpoint                   | Description                                 |
+| ------ | -------------------------- | ------------------------------------------- |
+| GET    | `/api/students/classes`    | Get active classes available for enrollment |
+| GET    | `/api/students`            | Get the student's enrollments               |
+| POST   | `/api/students/:code`      | Enroll in a class by code                   |
+| GET    | `/api/students/my_history` | Get the student's attendance history        |
 
 Pagination is supported on list endpoints:
 
@@ -143,12 +143,12 @@ Pagination is supported on list endpoints:
 
 All endpoints in this section require a valid JWT and the `TEACHER` role.
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| POST | `/api/teachers` | Mark attendance for a student |
-| PATCH | `/api/teachers/:classCode/attendance/:studentId` | Update today's attendance |
-| GET | `/api/teachers/:classCode/daily` | Get a daily class attendance summary |
-| GET | `/api/teachers/export/:classCode` | Export attendance as JSON or CSV |
+| Method | Endpoint                                         | Description                          |
+| ------ | ------------------------------------------------ | ------------------------------------ |
+| POST   | `/api/teachers`                                  | Mark attendance for a student        |
+| PATCH  | `/api/teachers/:classCode/attendance/:studentId` | Update today's attendance            |
+| GET    | `/api/teachers/:classCode/daily`                 | Get a daily class attendance summary |
+| GET    | `/api/teachers/export/:classCode`                | Export attendance as JSON or CSV     |
 
 Mark attendance body:
 
@@ -228,6 +228,16 @@ The application follows a layered structure:
 
 ## Development Notes
 
+- The React dashboard is located in `client/` and can be started separately from the API:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+- The client uses `http://localhost:4000/api` by default. To use another API URL, create `client/.env` with `VITE_API_URL=http://your-api-host/api`.
+- The client starts with login/signup and only renders role-specific workspaces after successful authentication. A successful login stores the JWT locally and loads live data from the backend.
 - The project currently provides a `start` script using Nodemon.
 - No automated test script is currently configured in `package.json`.
 - MongoDB must be running and reachable through `MONGO_URL` before starting the server.

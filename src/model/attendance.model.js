@@ -42,6 +42,7 @@ attendanceSchema.index(
   {
     student: 1,
     class: 1,
+    date: 1,
   },
   {
     unique: true,

@@ -1,7 +1,6 @@
 import {connectToMongo} from "./src/config/databaseConfig.js"
 import http from "http"
 import env from 'dotenv'
-import { log } from "console";
 import { app } from "./src/index.js";
 
 env.config();

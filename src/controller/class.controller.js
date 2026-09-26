@@ -1,8 +1,8 @@
-import ClassModel from "../model/class.model.js";
 import { validationResult } from "express-validator";
 import handelErrors from "../utils/globalError.js";
 import appError from "../utils/appError.js";
 import HttpStatusText from "../utils/httpStatusText.js";
+import classService from "../service/classService.js";
 
 const createClass = handelErrors(async (req, res, next) => {
   const reqBody = req.body;
@@ -12,9 +12,7 @@ const createClass = handelErrors(async (req, res, next) => {
     return next(error);
   }
   const teacherId = req.currentUser.id;
-  reqBody.teacher = teacherId;
-  const newClass = new ClassModel(reqBody);
-  await newClass.save();
+  const newClass = await classService.createClass(reqBody, teacherId);
   res.status(201).json({
     status: HttpStatusText.SUCCESS,
     message: "Class successfully added",
@@ -28,12 +26,7 @@ const getAllClasses = handelErrors(async (req, res, next) => {
   const page = Number(req.query.page) || 1;
   const skip = (page - 1) * limit;
   const teacherId = req.currentUser.id;
-  const classes = await ClassModel.find(
-    { teacher: teacherId },
-    { _id: false, __v: false },
-  )
-    .limit(limit)
-    .skip(skip);
+  const classes = await classService.getAllClasses(teacherId, limit, skip);
   res.status(200).json({
     status: HttpStatusText.SUCCESS,
     message: "get all classes",
@@ -45,18 +38,8 @@ const getAllClasses = handelErrors(async (req, res, next) => {
 const getClassByCode = handelErrors(async (req, res, next) => {
   const reqClassCode = req.params.code;
   const teacherId = req.currentUser.id;
-  console.log("sdfsdf");
 
-  const classData = await ClassModel.findOne(
-    {
-      teacher: teacherId,
-      code: reqClassCode,
-    },
-    {
-      _id: false,
-      __v: false,
-    },
-  );
+  const classData = await classService.getClassByCode(teacherId, reqClassCode);
 
   if (!classData) {
     const error = appError.create(
@@ -96,18 +79,10 @@ const editClass = handelErrors(async (req, res, next) => {
     }
   }
 
-  const updatedClass = await ClassModel.findOneAndUpdate(
-    {
-      teacher: teacherId,
-      code: reqClassCode,
-    },
-    {
-      $set: updateData,
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
+  const updatedClass = await classService.editClass(
+    teacherId,
+    reqClassCode,
+    updateData,
   );
 
   if (!updatedClass) {
@@ -132,10 +107,7 @@ const deleteClass = handelErrors(async (req, res, next) => {
   const reqClassCode = req.params.code;
   const teacherId = req.currentUser.id;
 
-  const deletedClass = await ClassModel.findOneAndDelete({
-    teacher: teacherId,
-    code: reqClassCode,
-  });
+  const deletedClass = await classService.deleteClass(teacherId, reqClassCode);
 
   if (!deletedClass) {
     const error = appError.create(

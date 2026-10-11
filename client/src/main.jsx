@@ -41,14 +41,6 @@ import {
 import "./styles.css";
 import "./controls.css";
 
-function formatDate(date) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-}
-
 function normalizeClass(item) {
   const schedule = item.schedule?.[0];
   return {
@@ -64,6 +56,15 @@ function normalizeClass(item) {
     status: item.status || "ACTIVE",
   };
 }
+
+function formatDate(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
@@ -715,73 +716,7 @@ function ClassesPage({
     </section>
   );
 }
-function ClassGrid({
-  classes,
-  selected,
-  onSelect,
-  onEdit,
-  onDelete,
-  editable,
-}) {
-  if (!classes.length)
-    return (
-      <Empty
-        title="No classes yet"
-        text="Create your first class to begin managing attendance."
-      />
-    );
-  return (
-    <div className="class-grid">
-      {classes.map((item) => (
-        <article
-          className={
-            selected?.code === item.code ? "class-card selected" : "class-card"
-          }
-          key={item.code}
-          onClick={() => onSelect(item)}
-        >
-          <div className="class-card-top">
-            <span className="class-code">{item.code}</span>
-            <Status status={item.status} />
-          </div>
-          <div className="class-card-body">
-            <h3>{item.name}</h3>
-            <p>{item.description || "No description provided."}</p>
-            <div className="class-meta">
-              <span>
-                <Clock3 size={14} /> {item.scheduleText}
-              </span>
-              <span>
-                <Users size={14} /> {item.students || 0} students
-              </span>
-            </div>
-            {editable && (
-              <div className="card-actions">
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onEdit(item);
-                  }}
-                >
-                  <FileText size={14} /> Edit
-                </button>
-                <button
-                  className="danger-link"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onDelete(item.code);
-                  }}
-                >
-                  <Trash2 size={14} /> Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </article>
-      ))}
-    </div>
-  );
-}
+
 function AttendancePage({
   classes,
   selected,
@@ -889,6 +824,76 @@ function AttendancePage({
     </section>
   );
 }
+
+
+function ClassGrid({
+  classes,
+  selected,
+  onSelect,
+  onEdit,
+  onDelete,
+  editable,
+}) {
+  if (!classes.length)
+    return (
+      <Empty
+        title="No classes yet"
+        text="Create your first class to begin managing attendance."
+      />
+    );
+  return (
+    <div className="class-grid">
+      {classes.map((item) => (
+        <article
+          className={
+            selected?.code === item.code ? "class-card selected" : "class-card"
+          }
+          key={item.code}
+          onClick={() => onSelect(item)}
+        >
+          <div className="class-card-top">
+            <span className="class-code">{item.code}</span>
+            <Status status={item.status} />
+          </div>
+          <div className="class-card-body">
+            <h3>{item.name}</h3>
+            <p>{item.description || "No description provided."}</p>
+            <div className="class-meta">
+              <span>
+                <Clock3 size={14} /> {item.scheduleText}
+              </span>
+              <span>
+                <Users size={14} /> {item.students || 0} students
+              </span>
+            </div>
+            {editable && (
+              <div className="card-actions">
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onEdit(item);
+                  }}
+                >
+                  <FileText size={14} /> Edit
+                </button>
+                <button
+                  className="danger-link"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onDelete(item.code);
+                  }}
+                >
+                  <Trash2 size={14} /> Delete
+                </button>
+              </div>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function AttendanceRow({ student, onSave }) {
   const [status, setStatus] = useState(
     student.status === "NOT_MARKED" ? "PRESENT" : student.status,

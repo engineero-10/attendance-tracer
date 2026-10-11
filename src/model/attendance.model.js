@@ -22,6 +22,7 @@ const attendanceSchema = new mongoose.Schema({
     enum: [AttendanceStatus.ABSENT, attendanceStatus.PRESENT],
     required: [true, "Attendance status is required"],
   },
+  
   participationScore: {
     type: Number,
     min: [0, "Participation score cannot be less than 0"],

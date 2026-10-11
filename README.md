@@ -16,9 +16,10 @@ Attendance Tracer is a REST API for managing classes, student enrollments, and d
 
 ## Requirements
 
-- Node.js 18 or newer
+- Node.js 20 or newer
 - MongoDB database
 - npm
+- express
 
 ## Installation
 

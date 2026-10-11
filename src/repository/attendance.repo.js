@@ -13,6 +13,7 @@ function findAttendance(query) {
 function updateAttendance(query, data) {
   return AttendanceModel.findOneAndUpdate(query, data, {
     new: true,
+    
     runValidators: true,
   });
 }

@@ -20,6 +20,7 @@ const signup = handelErrors(async (req, res, next) => {
 
   const payload = {
     id: newUser._id,
+    
     name: newUser.name,
     email: newUser.email,
     role: newUser.role,

@@ -13,6 +13,7 @@ Attendance Tracer is a REST API for managing classes, student enrollments, and d
 - Daily attendance summaries
 - Attendance export as JSON or CSV
 - Request validation and centralized error responses
+- younes ali mohammed
 
 ## Requirements
 

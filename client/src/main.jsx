@@ -1189,6 +1189,17 @@ function HistoryPage({ history, date, setDate }) {
     </>
   );
 }
+function Metric({ label, value, icon: Icon }) {
+  return (
+    <div className="metric-card">
+      <div className="metric-icon">
+        <Icon size={19} />
+      </div>
+      <strong className="metric-value">{value}</strong>
+      <span className="metric-label">{label}</span>
+    </div>
+  );
+}
 function ClassModal({ mode, item, onClose, onSave }) {
   const schedule = item?.schedule?.[0] || {};
   function submit(event) {
@@ -1283,17 +1294,7 @@ function ClassModal({ mode, item, onClose, onSave }) {
     </div>
   );
 }
-function Metric({ label, value, icon: Icon }) {
-  return (
-    <div className="metric-card">
-      <div className="metric-icon">
-        <Icon size={19} />
-      </div>
-      <strong className="metric-value">{value}</strong>
-      <span className="metric-label">{label}</span>
-    </div>
-  );
-}
+
 function Status({ status }) {
   return (
     <span className={`status-pill ${String(status).toLowerCase()}`}>
@@ -1301,9 +1302,7 @@ function Status({ status }) {
     </span>
   );
 }
-function Loading() {
-  return <div className="loading">Loading live data...</div>;
-}
+
 function Empty({ title, text }) {
   return (
     <div className="empty">
@@ -1312,6 +1311,9 @@ function Empty({ title, text }) {
       <span>{text}</span>
     </div>
   );
+}
+function Loading() {
+  return <div className="loading">Loading live data...</div>;
 }
 
 createRoot(document.getElementById("root")).render(<App />);
